@@ -10,7 +10,7 @@ Use this template for Operating Systems Program 1 in Java.
 
 To compile and run correctly:
 * **Your main class must be named `Program1`** because GitHub will use the run command `java Program1` to run your code. Other starter code files are included in this repository, but you can rename, modify, or combine those files as needed. 
-* Your Java source code files (`.java` files) must be stored in the `app/src/main/java/compsci424/p1/java` directory within your project environment. The Gradle build system will compile all `.java` files in this directory when you push your changes to GitHub Classroom. (On Windows, use backslashes '\' instead of forward slashes '/'.)
+* Your Java source code files (`.java` files) must be stored in the `app/src/main/java/compsci424/p1/java` directory within your project environment. The Gradle build system will compile all `.java` files in this directory when you push your changes to GitHub Classroom. (On Windows, use backslashes '\\' instead of forward slashes '/'.)
 
 This template uses the Gradle build system to build and run your Java code. All of the major Java IDEs (Eclipse, IntelliJ, and NetBeans) support Gradle, and so does Visual Studio Code. You might need to install a Gradle plugin or change a "Build System" setting in your project settings to enable Gradle. Try it and see what happens.
 
