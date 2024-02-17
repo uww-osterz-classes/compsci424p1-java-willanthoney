@@ -1,5 +1,5 @@
 /* COMPSCI 424 Program 1
- * Name:
+ * Name: Will Anthoney
  */
 package compsci424.p1.java;
 
@@ -13,16 +13,18 @@ package compsci424.p1.java;
  * classes, methods, and data structures that you need to solve the
  * problem and display your solution in the correct format.
  */
-public class Version2 {
+class Version2 implements ProcessManager{
     // Declare any class/instance variables that you need here.
 
+	private Version2PCB[] pcbArray;
     /**
      * Default constructor. Use this to allocate (if needed) and
      * initialize the PCB array, create the PCB for process 0, and do
      * any other initialization that is needed. 
      */
     public Version2() {
-
+    	pcbArray = new Version2PCB[16];
+        pcbArray[0] = new Version2PCB(-1);
     }
     
     /**
@@ -30,7 +32,7 @@ public class Version2 {
      * @param parentPid the PID of the new process's parent
      * @return 0 if successful, not 0 if unsuccessful
      */
-    int create(int parentPid) {
+    public int create(int parentPid) {
         // If parentPid is not in the process hierarchy, do nothing; 
         // your code may return an error code or message in this case,
         // but it should not halt
@@ -38,7 +40,20 @@ public class Version2 {
         // Assuming you've found the PCB for parentPid in the PCB array:
         // 1. Allocate and initialize a free PCB object from the array
         //    of PCB objects
-
+    	
+    	int newPid = findNextAvailablePid();
+        pcbArray[newPid] = new Version2PCB(parentPid);
+        int sibling = pcbArray[parentPid].firstChild;
+        if (sibling == -1) {
+            pcbArray[parentPid].firstChild = newPid;
+        } else {
+            while (pcbArray[sibling].youngerSibling != -1) {
+                sibling = pcbArray[sibling].youngerSibling;
+            }
+            pcbArray[sibling].youngerSibling = newPid;
+            pcbArray[newPid].olderSibling = sibling;
+        }
+        
         // 2. Connect the new PCB object to its parent, its older
         //    sibling (if any), and its younger sibling (if any)
 
@@ -53,7 +68,7 @@ public class Version2 {
      * @param targetPid the PID of the process to be destroyed
      * @return 0 if successful, not 0 if unsuccessful
      */
-    int destroy (int targetPid) {
+    public int destroy (int targetPid) {
         // If targetPid is not in the process hierarchy, do nothing; 
         // your code may return an error code or message in this case,
         // but it should not halt
@@ -68,6 +83,8 @@ public class Version2 {
 
         // 3. Deallocate targetPid's PCB and mark its PCB array entry
         //    as "free"
+    	
+    	destroyHelper(targetPid);
 
         // You can decide what the return value(s), if any, should be.
         // If you change the return type/value(s), update the Javadoc.
@@ -84,10 +101,55 @@ public class Version2 {
     * change the return type of this function to return the text to
     * the main program for printing. It's your choice. 
     */
-   void showProcessInfo() {
-
+   public void showProcessInfo() {
+	   
+	   for (int i = 0; i < pcbArray.length; i++) {
+           if (pcbArray[i] != null) {
+               System.out.print("Process " + i + ": parent is " + pcbArray[i].parent);
+               int child = pcbArray[i].firstChild;
+               if (child != -1) {
+                   System.out.print(" and children are ");
+                   while (child != -1) {
+                       if (pcbArray[child] != null) {
+                           System.out.print(child + " ");
+                       }
+                       child = pcbArray[child] != null ? pcbArray[child].youngerSibling : -1;
+                   }
+               } else {
+                   System.out.print(" and has no children");
+               }
+               System.out.println();
+           }
+       }
+       System.out.println();
    }
 
    /* If you need or want more methods, feel free to add them. */
-
+   
+   private void destroyHelper(int pid) {
+       int child = pcbArray[pid].firstChild;
+       while (child != -1) {
+           if (pcbArray[child] != null) {
+               destroyHelper(child);
+           }
+           child = pcbArray[child] != null ? pcbArray[child].youngerSibling : -1;
+       }
+       int olderSibling = pcbArray[pid].olderSibling;
+       int youngerSibling = pcbArray[pid].youngerSibling;
+       if (olderSibling != -1 && pcbArray[olderSibling] != null) {
+           pcbArray[olderSibling].youngerSibling = youngerSibling;
+       }
+       if (youngerSibling != -1 && pcbArray[youngerSibling] != null) {
+           pcbArray[youngerSibling].olderSibling = olderSibling;
+       }
+       pcbArray[pid] = null;
+   }
+   private int findNextAvailablePid() {
+       for (int i = 0; i < pcbArray.length; i++) {
+           if (pcbArray[i] == null) {
+               return i;
+           }
+       }
+       return -1;
+   }
 }
