@@ -17,7 +17,7 @@ public class Version1PCB {
     Version1PCB(int parent) {
         this.parent = parent;
     }
-
+/*
     public int getParent() {
         return parent;
     }
@@ -25,4 +25,5 @@ public class Version1PCB {
     public List<Integer> getChildren() {
         return children;
     }
+*/
 }
