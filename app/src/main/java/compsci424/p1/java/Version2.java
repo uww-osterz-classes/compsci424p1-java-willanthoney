@@ -1,7 +1,7 @@
 /* COMPSCI 424 Program 1
  * Name: Will Anthoney
  */
-//package compsci424.p1.java;
+package compsci424.p1.java;
 
 /** 
  * Implements the process creation hierarchy for Version 2, which does
@@ -13,7 +13,7 @@
  * classes, methods, and data structures that you need to solve the
  * problem and display your solution in the correct format.
  */
-class Version2 implements ProcessManager{
+class Version2{
     // Declare any class/instance variables that you need here.
 
 	private Version2PCB[] pcbArray;
@@ -41,10 +41,13 @@ class Version2 implements ProcessManager{
         // 1. Allocate and initialize a free PCB object from the array
         //    of PCB objects
     	
-    	int newPid = findNextAvailablePid();
-        if (newPid == -1 || parentPid < 0 || parentPid >= pcbArray.length) {
-            // Handle the case where there are no available slots or invalid parentPid
-            return -1; // Return an error code
+    	if (parentPid == -1 || parentPid < 0 || parentPid >= pcbArray.length || pcbArray[parentPid] == null) {
+            return -1;
+        }
+        int newPid = findNextAvailablePid();
+        if (newPid == -1) {
+            System.err.println("No available PID for new process.");
+            return -1;
         }
         pcbArray[newPid] = new Version2PCB(parentPid);
         int sibling = pcbArray[parentPid].firstChild;
@@ -137,6 +140,14 @@ class Version2 implements ProcessManager{
        while (child != -1) {
            if (pcbArray[child] != null) {
                destroyHelper(child);
+               int olderSibling = pcbArray[child].olderSibling;
+               int youngerSibling = pcbArray[child].youngerSibling;
+               if (olderSibling != -1 && pcbArray[olderSibling] != null) {
+                   pcbArray[olderSibling].youngerSibling = youngerSibling;
+               }
+               if (youngerSibling != -1 && pcbArray[youngerSibling] != null) {
+                   pcbArray[youngerSibling].olderSibling = olderSibling;
+               }
            }
            child = pcbArray[child] != null ? pcbArray[child].youngerSibling : -1;
        }
@@ -150,6 +161,7 @@ class Version2 implements ProcessManager{
        }
        pcbArray[pid] = null;
    }
+
    private int findNextAvailablePid() {
        for (int i = 0; i < pcbArray.length; i++) {
            if (pcbArray[i] == null) {
