@@ -101,28 +101,56 @@ public class Program1 {
         System.out.println("Version 2 running time (200 loops): " + runTimeLoopV2 + " milliseconds");     
     }
     
-    private static void runCommands(ProcessManager processManager, List<String> commands, boolean showInfo) {
-        for (String command : commands) {
-            String[] parts = command.split(" ");
-            String commandSplit = parts[0];
-            int pid = Integer.parseInt(parts[1]);
-            if (commandSplit.equals("create")) {
-                processManager.create(pid);
-                if (showInfo) {
-                    processManager.showProcessInfo();
+    private static void runCommands(Object processManager, List<String> commands, boolean showInfo) {
+        if (processManager instanceof Version1) {
+            Version1 version1 = (Version1) processManager;
+            for (String command : commands) {
+                String[] parts = command.split(" ");
+                if (parts.length < 2) {
+                    continue;
                 }
-            } else if (commandSplit.equals("destroy")) {
-                processManager.destroy(pid);
-                if (showInfo) {
-                    processManager.showProcessInfo();
+                String commandSplit = parts[0];
+                try {
+                    int pid = Integer.parseInt(parts[1]);
+                    if (commandSplit.equals("create")) {
+                        version1.create(pid);
+                        if (showInfo) {
+                            version1.showProcessInfo();
+                        }
+                    } else if (commandSplit.equals("destroy")) {
+                        version1.destroy(pid);
+                        if (showInfo) {
+                            version1.showProcessInfo();
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                }
+            }
+        } else if (processManager instanceof Version2) {
+            Version2 version2 = (Version2) processManager;
+            for (String command : commands) {
+                String[] parts = command.split(" ");
+                if (parts.length < 2) {
+                    continue;
+                }
+                String commandSplit = parts[0];
+                try {
+                    int pid = Integer.parseInt(parts[1]);
+                    if (commandSplit.equals("create")) {
+                        version2.create(pid);
+                        if (showInfo) {
+                            version2.showProcessInfo();
+                        }
+                    } else if (commandSplit.equals("destroy")) {
+                        version2.destroy(pid);
+                        if (showInfo) {
+                            version2.showProcessInfo();
+                        }
+                    }
+                } catch (NumberFormatException e) {
                 }
             }
         }
     }
-}
-    
-    interface ProcessManager {
-        int create(int parentPid);
-        int destroy(int targetPid);
-        void showProcessInfo();
+
 }
