@@ -1,7 +1,7 @@
 /* COMPSCI 424 Program 1
  * Name: Will Anthoney
  */
-package compsci424.p1.java;
+//package compsci424.p1.java;
 
 /** 
  * Implements the process creation hierarchy for Version 1, which uses
@@ -27,6 +27,7 @@ class Version1 implements ProcessManager{
     	pcbArray = new Version1PCB[16];
         pcbArray[0] = new Version1PCB(-1);
     }
+
     /**
      * Creates a new child process of the process with ID parentPid. 
      * @param parentPid the PID of the new process's parent
@@ -42,6 +43,10 @@ class Version1 implements ProcessManager{
         //    of PCB objects
     	
     	int newPid = findNextAvailablePid();
+        if (newPid == -1) {
+            // Handle the case where there are no available slots in pcbArray
+            return -1; // Return an error code
+        }
         pcbArray[newPid] = new Version1PCB(parentPid);
         if (pcbArray[parentPid].children == null) {
             pcbArray[parentPid].children = new LinkedList<>();
@@ -55,6 +60,7 @@ class Version1 implements ProcessManager{
         // If you change the return type/value(s), update the Javadoc.
         return 0; // often means "success" or "terminated normally"
     }
+
     /**
      * Recursively destroys the process with ID parentPid and all of
      * its descendant processes (child, grandchild, etc.).
@@ -82,6 +88,7 @@ class Version1 implements ProcessManager{
          // If you change the return type/value(s), update the Javadoc.
         return 0; // often means "success" or "terminated normally"
     }
+
     /**
      * Traverse the process creation hierarchy graph, printing
      * information about each process as you go. See Canvas for the
@@ -109,7 +116,9 @@ class Version1 implements ProcessManager{
             }
         }
         System.out.println();
+    	
     }
+
     /* If you need or want more methods, feel free to add them. */
     
     private void destroyHelper(int pid) {
@@ -128,5 +137,5 @@ class Version1 implements ProcessManager{
             }
         }
         return -1;
-    }  
+    } 
 }
