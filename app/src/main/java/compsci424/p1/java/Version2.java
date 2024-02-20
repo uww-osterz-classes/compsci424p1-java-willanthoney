@@ -1,7 +1,7 @@
 /* COMPSCI 424 Program 1
  * Name: Will Anthoney
  */
-package compsci424.p1.java;
+//package compsci424.p1.java;
 
 /** 
  * Implements the process creation hierarchy for Version 2, which does
@@ -42,16 +42,22 @@ class Version2 implements ProcessManager{
         //    of PCB objects
     	
     	int newPid = findNextAvailablePid();
+        if (newPid == -1 || parentPid < 0 || parentPid >= pcbArray.length) {
+            // Handle the case where there are no available slots or invalid parentPid
+            return -1; // Return an error code
+        }
         pcbArray[newPid] = new Version2PCB(parentPid);
         int sibling = pcbArray[parentPid].firstChild;
         if (sibling == -1) {
             pcbArray[parentPid].firstChild = newPid;
         } else {
-            while (pcbArray[sibling].youngerSibling != -1) {
+            while (pcbArray[sibling] != null && pcbArray[sibling].youngerSibling != -1) {
                 sibling = pcbArray[sibling].youngerSibling;
             }
-            pcbArray[sibling].youngerSibling = newPid;
-            pcbArray[newPid].olderSibling = sibling;
+            if (pcbArray[sibling] != null) {
+                pcbArray[sibling].youngerSibling = newPid;
+                pcbArray[newPid].olderSibling = sibling;
+            }
         }
         
         // 2. Connect the new PCB object to its parent, its older
