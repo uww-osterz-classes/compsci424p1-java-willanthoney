@@ -1,7 +1,7 @@
 /* COMPSCI 424 Program 1
  * Name: Will Anthoney
  */
-//package compsci424.p1.java;
+package compsci424.p1.java;
 
 /** 
  * Implements the process creation hierarchy for Version 1, which uses
@@ -15,7 +15,7 @@
  */
 import java.util.LinkedList;
 
-class Version1 implements ProcessManager{
+class Version1{
     // Declare any class/instance variables that you need here.
 	private Version1PCB[] pcbArray;
     /**
@@ -42,11 +42,11 @@ class Version1 implements ProcessManager{
         // 1. Allocate and initialize a free PCB object from the array
         //    of PCB objects
     	
-    	int newPid = findNextAvailablePid();
-        if (newPid == -1) {
-            // Handle the case where there are no available slots in pcbArray
-            return -1; // Return an error code
+    	if (parentPid < 0 || parentPid >= pcbArray.length || pcbArray[parentPid] == null) {
+            return -1;
         }
+
+        int newPid = findNextAvailablePid();
         pcbArray[newPid] = new Version1PCB(parentPid);
         if (pcbArray[parentPid].children == null) {
             pcbArray[parentPid].children = new LinkedList<>();
@@ -116,12 +116,15 @@ class Version1 implements ProcessManager{
             }
         }
         System.out.println();
-    	
     }
 
     /* If you need or want more methods, feel free to add them. */
     
     private void destroyHelper(int pid) {
+        if (pcbArray[pid] == null) {
+            return;
+        }
+        
         if (pcbArray[pid].children != null) {
             for (int childPid : pcbArray[pid].children) {
                 destroyHelper(childPid);
