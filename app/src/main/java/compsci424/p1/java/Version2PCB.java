@@ -21,7 +21,7 @@ public class Version2PCB {
         this.youngerSibling = -1;
         this.olderSibling = -1;
     }
-
+/*
     public int getParent() {
         return parent;
     }
@@ -37,4 +37,5 @@ public class Version2PCB {
     public int getOlderSibling() {
         return olderSibling;
     }   
+*/
 }
