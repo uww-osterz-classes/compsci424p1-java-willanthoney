@@ -2,28 +2,34 @@
  * Name: Will Anthoney
  */
 package compsci424.p1.java;
+import java.util.LinkedList;
 
-import java.util.List;
+class Version1PCB {
+    private int parent;
+    private LinkedList<Integer> children;
 
-/**
- * The process control block structure that is used to track a
- * process's parent and children (if any) in Version 1.
- */
-public class Version1PCB {
-    
-	int parent;
-    List<Integer> children;
-
-    Version1PCB(int parent) {
-        this.parent = parent;
+    public Version1PCB() {
+        this.parent = -1;
+        this.children = new LinkedList<>();
     }
-/*
+
     public int getParent() {
         return parent;
     }
 
-    public List<Integer> getChildren() {
+    public void setParent(int parent) {
+        this.parent = parent;
+    }
+
+    public LinkedList<Integer> getChildren() {
         return children;
     }
-*/
+
+    public void addChild(int child) {
+        this.children.add(child);
+    }
+
+    public void removeChild(int child) {
+        this.children.remove((Integer) child);
+    }
 }
