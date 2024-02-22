@@ -3,39 +3,48 @@
  */
 package compsci424.p1.java;
 
-/**
- * The process control block structure that is used to track a
- * process's parent, first child, younger sibling, and older sibling
- * (if they exist) in Version 2.
- */
-public class Version2PCB {
-	
-	int parent;
-    int firstChild;
-    int youngerSibling;
-    int olderSibling;
+class Version2PCB {
+    private int parent;
+    private int firstChild;
+    private int youngerSibling;
+    private int olderSibling;
 
-    Version2PCB(int parent) {
-        this.parent = parent;
+    public Version2PCB() {
+        this.parent = -1;
         this.firstChild = -1;
         this.youngerSibling = -1;
         this.olderSibling = -1;
     }
-/*
+
     public int getParent() {
         return parent;
+    }
+
+    public void setParent(int parent) {
+        this.parent = parent;
     }
 
     public int getFirstChild() {
         return firstChild;
     }
 
+    public void setFirstChild(int firstChild) {
+        this.firstChild = firstChild;
+    }
+
     public int getYoungerSibling() {
         return youngerSibling;
     }
 
+    public void setYoungerSibling(int youngerSibling) {
+        this.youngerSibling = youngerSibling;
+    }
+
     public int getOlderSibling() {
         return olderSibling;
-    }   
-*/
+    }
+
+    public void setOlderSibling(int olderSibling) {
+        this.olderSibling = olderSibling;
+    }
 }
