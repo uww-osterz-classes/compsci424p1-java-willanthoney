@@ -2,34 +2,17 @@
  * Name: Will Anthoney
  */
 package compsci424.p1.java;
+
 import java.util.LinkedList;
 
-class Version1PCB {
-    private int parent;
-    private LinkedList<Integer> children;
+public class Version1PCB {
 
-    public Version1PCB() {
-        this.parent = -1;
-        this.children = new LinkedList<>();
-    }
+	int parent;
+    LinkedList<Integer> children;
 
-    public int getParent() {
-        return parent;
-    }
-
-    public void setParent(int parent) {
+    public Version1PCB(int parent) {
         this.parent = parent;
-    }
-
-    public LinkedList<Integer> getChildren() {
-        return children;
-    }
-
-    public void addChild(int child) {
-        this.children.add(child);
-    }
-
-    public void removeChild(int child) {
-        this.children.remove((Integer) child);
+        this.children = new LinkedList<>();
+	
     }
 }
